@@ -15,9 +15,12 @@ public class BlockCreator : MonoBehaviour
 
     private IDirectional creatorDirection;
     private Transform cursor;
+    private int enemyLayerMask;
 
     private void Start()
     {
+        enemyLayerMask = LayerMask.GetMask("Enemy");
+
         creatorDirection = creator.GetComponent<IDirectional>();
         if (creatorDirection == null)
         {
@@ -31,7 +34,7 @@ public class BlockCreator : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         UpdateCursor();
     }
@@ -61,7 +64,7 @@ public class BlockCreator : MonoBehaviour
         CreateOrDestroyBlockAtGridPosition(gridPosition, false);
     }
 
-    private void CreateOrDestroyBlockAtGridPosition(Vector3Int gridPosition, bool forceDestroy)
+    private bool CreateOrDestroyBlockAtGridPosition(Vector3Int gridPosition, bool forceDestroy)
     {
         if (debug)
         {
@@ -75,7 +78,7 @@ public class BlockCreator : MonoBehaviour
                 Debug.Log("Indestructible blocks cannot be destroyed");
             }
 
-            return;
+            return false;
         }
 
         if (destructableTileMap.HasTile(gridPosition) || forceDestroy)
@@ -86,13 +89,30 @@ public class BlockCreator : MonoBehaviour
             }
 
             destructableTileMap.SetTile(gridPosition, null);
+            return true;
         }
         else
         {
-            Debug.Log($"Creating block: {blockTile.name}");
+            var worldPos = destructableTileMap.CellToWorld(gridPosition) + destructableTileMap.tileAnchor;
 
-            destructableTileMap.SetTile(gridPosition, blockTile);
+            var overlap = Physics2D.OverlapBox(worldPos, new Vector2(0.75f, 0.75f), 0f, enemyLayerMask);
+            if (overlap == null)
+            {
+                Debug.Log($"Creating block: {blockTile.name}");
+
+                destructableTileMap.SetTile(gridPosition, blockTile);
+                return true;
+            }
+
         }
+        return false;
+    }
+
+    public bool DestroyBlock(Vector3 position, int direction)
+    {
+        var blockPos = destructableTileMap.WorldToCell(position) + Vector3Int.right * direction;
+        var destroyed = CreateOrDestroyBlockAtGridPosition(blockPos, true);
+        return destroyed;
     }
 
     public void DestroyAboveBlock(Vector3 position)

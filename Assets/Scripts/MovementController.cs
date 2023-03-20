@@ -30,7 +30,13 @@ public class MovementController : MonoBehaviour, IDirectional
     {
         if ((horizontalMovement < -0.05f || horizontalMovement > 0.05f) && CanMove())
         {
-            Direction = horizontalMovement < 0f ? -1 : 1;
+            var newDirection = horizontalMovement < 0f ? -1 : 1;
+            if (newDirection != Direction)
+            {
+                Debug.Log("Flipping");
+                Flip();
+            }
+            Direction = newDirection;
 
             // TODO: Check collision before allowing translation. This is causing issues with
             // collisions
@@ -57,6 +63,12 @@ public class MovementController : MonoBehaviour, IDirectional
                 isJumping = false;
             }
         }
+    }
+
+    private void Flip()
+    {
+        var scale = this.entity.transform.localScale;
+        this.entity.transform.localScale = new Vector3(scale.x * -1, scale.y, scale.z);
     }
 
     private bool CanMove()
