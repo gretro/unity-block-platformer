@@ -6,7 +6,7 @@ public class MovementController : MonoBehaviour, IDirectional
     public Collider2D GroundCollider;
     public Collider2D CeilingCollider;
 
-    public Rigidbody2D player;
+    public Rigidbody2D entity;
 
     public float MovementSpeed = 3f;
     public float JumpForce = 260f;
@@ -34,7 +34,7 @@ public class MovementController : MonoBehaviour, IDirectional
 
             // TODO: Check collision before allowing translation. This is causing issues with
             // collisions
-            player.transform.Translate(horizontalMovement * MovementSpeed * Time.fixedDeltaTime * Vector3.right);
+            entity.transform.Translate(horizontalMovement * MovementSpeed * Time.fixedDeltaTime * Vector3.right);
             horizontalMovement = 0f;
         }
 
@@ -47,7 +47,7 @@ public class MovementController : MonoBehaviour, IDirectional
         {
             if (CanJump())
             {
-                player.AddForce(Vector2.up * JumpForce);
+                entity.AddForce(Vector2.up * JumpForce);
 
                 isJumping = false;
                 hasAirControl = true;
@@ -71,7 +71,7 @@ public class MovementController : MonoBehaviour, IDirectional
 
     private bool IsOnGround()
     {
-        return GroundCollider.IsTouchingLayers(blocksLayer) && Mathf.Abs(player.velocity.y) < 0.05f;
+        return GroundCollider.IsTouchingLayers(blocksLayer) && Mathf.Abs(entity.velocity.y) < 0.05f;
     }
 
     private bool IsBelowBlock()
