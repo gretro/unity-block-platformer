@@ -33,7 +33,6 @@ public class MovementController : MonoBehaviour, IDirectional
             var newDirection = horizontalMovement < 0f ? -1 : 1;
             if (newDirection != Direction)
             {
-                Debug.Log("Flipping");
                 Flip();
             }
             Direction = newDirection;
