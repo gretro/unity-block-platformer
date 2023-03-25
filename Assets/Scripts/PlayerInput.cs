@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerInput : MonoBehaviour
 {
@@ -7,6 +8,15 @@ public class PlayerInput : MonoBehaviour
     public float minTimeBetweenActions = 0.25f;
 
     private float lastActionAt = 0;
+
+    private int enemyLayer;
+
+    public UnityEvent playerDied;
+
+    private void Start()
+    {
+        enemyLayer = LayerMask.NameToLayer("Enemy");
+    }
 
     void Update()
     {
@@ -38,5 +48,13 @@ public class PlayerInput : MonoBehaviour
     {
         var delta = Time.time - lastActionAt;
         return delta >= minTimeBetweenActions;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.layer == enemyLayer)
+        {
+            playerDied.Invoke();
+        }
     }
 }
