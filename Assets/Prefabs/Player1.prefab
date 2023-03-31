@@ -386,7 +386,7 @@ MonoBehaviour:
   GroundCollider: {fileID: 607321529667564146}
   CeilingCollider: {fileID: 607321529496382481}
   entity: {fileID: 607321530735808881}
-  MovementSpeed: 3
+  MovementSpeed: 200
   JumpForce: 230
   blockCreator: {fileID: 607321530735808885}
 --- !u!114 &607321530735808883

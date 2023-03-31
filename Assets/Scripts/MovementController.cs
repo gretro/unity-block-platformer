@@ -8,7 +8,7 @@ public class MovementController : MonoBehaviour, IDirectional
 
     public Rigidbody2D entity;
 
-    public float MovementSpeed = 3f;
+    public float MovementSpeed = 200f;
     public float JumpForce = 260f;
 
     public int Direction { get; private set; } = 1;
@@ -28,7 +28,7 @@ public class MovementController : MonoBehaviour, IDirectional
 
     private void FixedUpdate()
     {
-        if ((horizontalMovement < -0.05f || horizontalMovement > 0.05f) && CanMove())
+        if (Mathf.Abs(horizontalMovement) > 0.05f && CanMove())
         {
             var newDirection = horizontalMovement < 0f ? -1 : 1;
             if (newDirection != Direction)
@@ -37,10 +37,11 @@ public class MovementController : MonoBehaviour, IDirectional
             }
             Direction = newDirection;
 
-            // TODO: Check collision before allowing translation. This is causing issues with
-            // collisions
-            entity.transform.Translate(horizontalMovement * MovementSpeed * Time.fixedDeltaTime * Vector3.right);
+            entity.velocity = new Vector2(horizontalMovement * MovementSpeed * Time.fixedDeltaTime, entity.velocity.y);
             horizontalMovement = 0f;
+        } else
+        {
+            entity.velocity = new Vector2(0, entity.velocity.y);
         }
 
         if (hasAirControl && IsOnGround())
