@@ -4,7 +4,7 @@ using UnityEngine.Events;
 public class PlayerInput : MonoBehaviour
 {
     public MovementController player;
-    public BlockCreator playerBlockCreator;
+    public BlockManager blockManager;
     public float minTimeBetweenActions = 0.25f;
 
     private float lastActionAt = 0;

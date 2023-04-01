@@ -41,3 +41,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: GameProps
+    uniqueID: 2867913847
+    locked: 0
+  - name: Player
+    uniqueID: 3635426109
+    locked: 0
+  - name: Blocks
+    uniqueID: 276771751
+    locked: 0
+  - name: LevelBound
+    uniqueID: 2816639587
+    locked: 0
