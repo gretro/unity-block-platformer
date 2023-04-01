@@ -1,24 +1,36 @@
-using System;
 using UnityEngine;
 
+[RequireComponent(typeof(MovementController))]
 public class PatrollingEnemy : MonoBehaviour
 {
-    public MovementController entity;
-    public BlockCreator blockCreator;
-
-    public Collider2D cliffTrigger;
+    [Header("Collisions")]
+    [SerializeField]
+    private Collider2D cliffTrigger;
+    [SerializeField]
     public Collider2D forwardTrigger;
+    [SerializeField]
+    private LayerMask blocksLayer;
 
-    public bool smashDestructibleBlock;
-    public bool canFall;
-    public bool debug;
+    [Header("Channels")]
+    [SerializeField]
+    private BlockChannel blockChannel = default;
 
-    private float horizontalMovement = 1f;
-    private int blocksLayer;
+    [Header("Behaviours")]
+    [SerializeField]
+    private bool smashDestructibleBlock;
+    [SerializeField]
+    private bool canFall;
+
+    [Header("Debug")]
+    [SerializeField]
+    private bool debug;
+
+    private MovementController _entity;
+    private float _horizontalMovement = 1f;
 
     private void Start()
     {
-        blocksLayer = LayerMask.GetMask("Blocks");
+        _entity = GetComponent<MovementController>();
     }
 
     private void Update()
@@ -33,31 +45,37 @@ public class PatrollingEnemy : MonoBehaviour
                     Debug.Log("Enemy changing direction because of a cliff");
                 }
 
-                horizontalMovement *= -1;
+                _horizontalMovement *= -1;
             }
         }
 
         var blockAhead = forwardTrigger.IsTouchingLayers(blocksLayer);
         if (blockAhead)
         {
-            var blockDestroyed = false;
+            var isBlockDestructible = false;
 
             if (smashDestructibleBlock)
             {
-                blockDestroyed = blockCreator.DestroyBlock(entity.transform.position, (int)horizontalMovement);
+                var offset = Vector3Int.right * (int)_horizontalMovement;
+
+                isBlockDestructible = blockChannel.BlockDestructibleQuery.RaiseQuery(_entity.transform.position, offset);
+                if (isBlockDestructible)
+                {
+                    blockChannel.DestroyBlock.RaiseEvent(_entity.transform.position, offset);
+                }
             }
 
-            if (!smashDestructibleBlock || !blockDestroyed)
+            if (!smashDestructibleBlock || !isBlockDestructible)
             {
                 if (debug)
                 {
                     Debug.Log("Enemy changing direction because of a block");
                 }
                 
-                horizontalMovement *= -1;
+                _horizontalMovement *= -1;
             }
         }
 
-        entity.Move(horizontalMovement);
+        _entity.Move(_horizontalMovement);
     }
 }

@@ -1422,7 +1422,7 @@ GameObject:
   - component: {fileID: 7803095455425019459}
   - component: {fileID: 7803095455425019460}
   m_Layer: 6
-  m_Name: EmptyLevel
+  m_Name: Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1633,13 +1633,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bad2803d024819429f0c8f80648d9ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  indestructibleTile: {fileID: 11400000, guid: 7eabb693a589fc64f848f3053f591342, type: 2}
   blockConfigurations:
   - source: 0
     tile: {fileID: 11400000, guid: 974d5ae2405ff9342b086e79a134b12d, type: 2}
-    damagedTile: {fileID: 11400000, guid: 974d5ae2405ff9342b086e79a134b12d, type: 2}
+    damagedTile: {fileID: 11400000, guid: f565fa732c0c94440946250f30af27f2, type: 2}
   - source: 1
     tile: {fileID: 11400000, guid: acfd940bd7566d24cbe05fc3c4fcce61, type: 2}
-    damagedTile: {fileID: 11400000, guid: acfd940bd7566d24cbe05fc3c4fcce61, type: 2}
+    damagedTile: {fileID: 11400000, guid: 90879aba758e3214bb0544b23cb3caf6, type: 2}
   gridWidth: 32
   gridHeight: 22
+  noBlockLayers:
+    serializedVersion: 2
+    m_Bits: 136
+  blockChannel: {fileID: 11400000, guid: b53032f67889686418492bd84540e72b, type: 2}
+  debug: 0

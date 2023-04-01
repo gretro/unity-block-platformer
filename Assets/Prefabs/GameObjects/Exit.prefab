@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6111019096151588485}
   - component: {fileID: 6111019096151588484}
-  - component: {fileID: 6111019096151588487}
-  m_Layer: 0
+  - component: {fileID: 4004803746437061847}
+  m_Layer: 3
   m_Name: Exit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,7 +62,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.18517631, y: 0.66416955}
   m_EdgeRadius: 0
---- !u!114 &6111019096151588487
+--- !u!114 &4004803746437061847
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -71,26 +71,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 6111019096151588490}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a890288d6f1fdd44096692400fb9e1d7, type: 3}
+  m_Script: {fileID: 11500000, guid: 27dabe501dec12a42beb7e944b432ec6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Closed: {fileID: 6111019096415087072}
-  Opened: {fileID: 6111019096471356142}
-  LevelExited:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: OnGameOver
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  closedDoor: {fileID: 6111019096415087072}
+  openedDoor: {fileID: 6111019096471356142}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  levelChannel: {fileID: 11400000, guid: a90dd6302fcc8ef4eb71cd4e1cdeebb3, type: 2}
 --- !u!1 &6111019096415087073
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,7 +90,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6111019096415087072}
   - component: {fileID: 6111019096415087075}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Closed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,7 +175,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6111019096471356142}
   - component: {fileID: 6111019096471356137}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Opened
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -271,7 +260,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6111019097001122984}
   - component: {fileID: 6111019097001122987}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -355,7 +344,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6111019097501175540}
   - component: {fileID: 6111019097501175543}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Knob
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -439,7 +428,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6111019097841701934}
   - component: {fileID: 6111019097841701929}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: DoorFrame
   m_TagString: Untagged
   m_Icon: {fileID: 0}

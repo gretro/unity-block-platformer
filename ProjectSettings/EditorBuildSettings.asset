@@ -6,9 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Prefabs/Level1Scene.unity
-    guid: 8c9cfa26abfee488c85f1582747f6a02
-  - enabled: 1
-    path: Assets/Scenes/Level2Scene.unity
+    path: Assets/Levels/Scenes/BlockIntroduction.unity
     guid: 6d00f7acbb1ad9449965b7dcf1b9e24b
+  - enabled: 1
+    path: Assets/Levels/Scenes/EnemyIntroduction.unity
+    guid: 8c9cfa26abfee488c85f1582747f6a02
   m_configObjects: {}

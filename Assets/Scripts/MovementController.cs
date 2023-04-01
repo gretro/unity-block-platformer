@@ -1,79 +1,89 @@
 using Assets.Scripts;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class MovementController : MonoBehaviour, IDirectional
 {
-    public Collider2D GroundCollider;
-    public Collider2D CeilingCollider;
+    [Header("Collisions")]
+    [SerializeField]
+    private Collider2D groundCollider;
+    [SerializeField]
+    private Collider2D ceilingCollider;
+    [SerializeField]
+    private LayerMask blocksLayer;
 
-    public Rigidbody2D entity;
+    [Header("Movement")]
+    [SerializeField]
+    private float movementSpeed = 200f;
+    [SerializeField]
+    private float jumpForce = 260f;
 
-    public float MovementSpeed = 200f;
-    public float JumpForce = 260f;
+    [Header("Channels")]
+    [SerializeField]
+    public BlockChannel blockChannel;
 
+    [HideInInspector]
     public int Direction { get; private set; } = 1;
 
-    public BlockCreator blockCreator;
+    private Rigidbody2D _entity;
+    private float _horizontalMovement = 0f;
+    private bool _isJumping = false;
+    private bool _hasAirControl = false;
 
-    private float horizontalMovement = 0f;
-    private bool isJumping = false;
-    private bool hasAirControl = false;
-
-    private int blocksLayer;
 
     private void Start()
     {
-        blocksLayer = LayerMask.GetMask("Blocks");
+        _entity = GetComponent<Rigidbody2D>();
     }
 
     private void FixedUpdate()
     {
-        if (Mathf.Abs(horizontalMovement) > 0.05f && CanMove())
+        if (Mathf.Abs(_horizontalMovement) > 0.05f && CanMove())
         {
-            var newDirection = horizontalMovement < 0f ? -1 : 1;
+            var newDirection = _horizontalMovement < 0f ? -1 : 1;
             if (newDirection != Direction)
             {
                 Flip();
             }
             Direction = newDirection;
 
-            entity.velocity = new Vector2(horizontalMovement * MovementSpeed * Time.fixedDeltaTime, entity.velocity.y);
-            horizontalMovement = 0f;
+            _entity.velocity = new Vector2(_horizontalMovement * movementSpeed * Time.fixedDeltaTime, _entity.velocity.y);
+            _horizontalMovement = 0f;
         } else
         {
-            entity.velocity = new Vector2(0, entity.velocity.y);
+            _entity.velocity = new Vector2(0, _entity.velocity.y);
         }
 
-        if (hasAirControl && IsOnGround())
+        if (_hasAirControl && IsOnGround())
         {
-            hasAirControl = false;
+            _hasAirControl = false;
         }
 
-        if (isJumping)
+        if (_isJumping)
         {
             if (CanJump())
             {
-                entity.AddForce(Vector2.up * JumpForce);
+                _entity.AddForce(Vector2.up * jumpForce);
 
-                isJumping = false;
-                hasAirControl = true;
+                _isJumping = false;
+                _hasAirControl = true;
             } else
             {
-                blockCreator.DestroyAboveBlock(transform.position);
-                isJumping = false;
+                blockChannel.DamageBlock.RaiseEvent(transform.position, Vector3Int.up);
+                _isJumping = false;
             }
         }
     }
 
     private void Flip()
     {
-        var scale = this.entity.transform.localScale;
-        this.entity.transform.localScale = new Vector3(scale.x * -1, scale.y, scale.z);
+        var scale = this._entity.transform.localScale;
+        this._entity.transform.localScale = new Vector3(scale.x * -1, scale.y, scale.z);
     }
 
     private bool CanMove()
     {
-        return hasAirControl || IsOnGround();
+        return _hasAirControl || IsOnGround();
     }
 
     private bool CanJump()
@@ -83,26 +93,26 @@ public class MovementController : MonoBehaviour, IDirectional
 
     private bool IsOnGround()
     {
-        return GroundCollider.IsTouchingLayers(blocksLayer) && Mathf.Abs(entity.velocity.y) < 0.05f;
+        return groundCollider.IsTouchingLayers(blocksLayer) && Mathf.Abs(_entity.velocity.y) < 0.05f;
     }
 
     private bool IsBelowBlock()
     {
-        return CeilingCollider.IsTouchingLayers(blocksLayer);
+        return ceilingCollider.IsTouchingLayers(blocksLayer);
     }
 
     public void Move(float movement)
     {
-        horizontalMovement = movement;
+        _horizontalMovement = movement;
     }
 
     public void Jump()
     {
-        if (isJumping || !IsOnGround())
+        if (_isJumping || !IsOnGround())
         {
             return;
         }
 
-        isJumping = true;
+        _isJumping = true;
     }
 }
